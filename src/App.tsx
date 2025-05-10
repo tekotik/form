@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { User, Lock, Check, ArrowLeft, ArrowRight } from 'lucide-react';
+import { User, Lock, Check, ArrowLeft, ArrowRight, MessageCircle } from 'lucide-react';
 import { format, addDays, isSameDay } from 'date-fns';
 import { ru } from 'date-fns/locale';
 
@@ -95,43 +95,43 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg p-6">
+    <div className="min-h-screen bg-gray-50 p-2 sm:p-4">
+      <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg p-3 sm:p-6">
         {/* Шапка с навигацией */}
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-4 sm:mb-6">
           <div className="flex items-center">
-            <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white text-sm sm:text-base">
               Ai
             </div>
-            <span className="ml-3 text-xl font-semibold">Алина</span>
+            <span className="ml-2 sm:ml-3 text-lg sm:text-xl font-semibold">Алина</span>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-1 sm:gap-2">
             {/* Улучшенная навигация по предыдущим шагам */}
             {selectedService && currentScreen !== 'service' && (
               <button 
                 onClick={() => navigateToScreen('service')}
-                className="px-3 py-1 text-sm rounded-lg bg-blue-50 text-blue-500 flex items-center"
+                className="px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-lg bg-blue-50 text-blue-500 flex items-center"
               >
-                <ArrowLeft size={14} className="mr-1" />
+                <ArrowLeft size={12} className="mr-1" />
                 Услуги
               </button>
             )}
             {selectedMaster && (currentScreen === 'datetime' || currentScreen === 'confirmation') && (
               <button 
                 onClick={() => navigateToScreen('master')}
-                className="px-3 py-1 text-sm rounded-lg bg-blue-50 text-blue-500 flex items-center"
+                className="px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-lg bg-blue-50 text-blue-500 flex items-center"
               >
-                <ArrowLeft size={14} className="mr-1" />
+                <ArrowLeft size={12} className="mr-1" />
                 Мастера
               </button>
             )}
             {selectedDate && selectedTime && currentScreen === 'confirmation' && (
               <button 
                 onClick={() => navigateToScreen('datetime')}
-                className="px-3 py-1 text-sm rounded-lg bg-blue-50 text-blue-500 flex items-center"
+                className="px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-lg bg-blue-50 text-blue-500 flex items-center"
               >
-                <ArrowLeft size={14} className="mr-1" />
-                Дата/Время
+                <ArrowLeft size={12} className="mr-1" />
+                Дата
               </button>
             )}
           </div>
@@ -139,29 +139,29 @@ function App() {
 
         {/* Выбор услуги */}
         {currentScreen === 'service' && (
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-lg font-semibold">
+          <div className="mb-4 sm:mb-6">
+            <div className="flex items-center justify-between mb-2 sm:mb-3">
+              <h2 className="text-base sm:text-lg font-semibold">
                 {selectedService ? selectedService.name : 'Выберите услугу'}
               </h2>
               {selectedService && (
-                <span className="text-sm text-gray-500">{selectedService.price}</span>
+                <span className="text-xs sm:text-sm text-gray-500">{selectedService.price}</span>
               )}
             </div>
             
-            <div className="grid grid-cols-2 gap-3 mt-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mt-2 sm:mt-3">
               {servicesData.map(service => (
                 <button
                   key={service.id}
                   onClick={() => handleServiceSelect(service)}
-                  className={`p-3 rounded-lg text-left transition-all ${
+                  className={`p-2 sm:p-3 rounded-lg text-left transition-all ${
                     selectedService?.id === service.id
                       ? 'bg-blue-500 text-white'
                       : 'bg-gray-50 hover:bg-gray-100'
                   }`}
                 >
-                  <div className="font-medium">{service.name}</div>
-                  <div className="text-sm opacity-80">{service.price}</div>
+                  <div className="text-sm sm:text-base font-medium">{service.name}</div>
+                  <div className="text-xs sm:text-sm opacity-80">{service.price}</div>
                 </button>
               ))}
             </div>
@@ -170,30 +170,30 @@ function App() {
 
         {/* Выбор мастера */}
         {currentScreen === 'master' && selectedService && (
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-lg font-semibold">
+          <div className="mb-4 sm:mb-6">
+            <div className="flex items-center justify-between mb-2 sm:mb-3">
+              <h2 className="text-base sm:text-lg font-semibold">
                 {selectedMaster ? selectedMaster.name : 'Выберите мастера'}
               </h2>
             </div>
 
-            <div className="flex gap-4 overflow-x-auto pb-2 mt-3">
+            <div className="flex gap-2 sm:gap-4 overflow-x-auto pb-2 mt-2 sm:mt-3">
               {getAvailableMasters().map(master => (
                 <button
                   key={master.id}
                   onClick={() => handleMasterSelect(master)}
-                  className={`flex flex-col items-center min-w-[80px] p-2 rounded-lg transition-all ${
+                  className={`flex flex-col items-center min-w-[70px] sm:min-w-[80px] p-2 rounded-lg transition-all ${
                     selectedMaster?.id === master.id ? 'bg-blue-50' : ''
                   }`}
                 >
-                  <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-2 ${
+                  <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mb-1 sm:mb-2 ${
                     selectedMaster?.id === master.id
                       ? 'bg-blue-500 text-white'
                       : 'bg-gray-200'
                   }`}>
                     {master.name[0]}
                   </div>
-                  <span className="text-sm">{master.name}</span>
+                  <span className="text-xs sm:text-sm">{master.name}</span>
                 </button>
               ))}
             </div>
@@ -203,8 +203,8 @@ function App() {
         {/* Выбор даты и времени */}
         {currentScreen === 'datetime' && selectedMaster && (
           <div>
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-lg font-semibold">
+            <div className="flex items-center justify-between mb-2 sm:mb-3">
+              <h2 className="text-base sm:text-lg font-semibold">
                 {selectedDate 
                   ? `${format(selectedDate, 'd MMMM', { locale: ru })} ${selectedTime || ''}`
                   : 'Выберите дату и время'
@@ -213,20 +213,20 @@ function App() {
             </div>
 
             {/* Календарь */}
-            <div className="mb-6">
-              <div className="flex justify-between items-center mb-3">
+            <div className="mb-4 sm:mb-6">
+              <div className="flex justify-between items-center mb-2 sm:mb-3">
                 <button onClick={() => setCurrentWeekStart(d => addDays(d, -7))}>
-                  <ArrowLeft size={20} />
+                  <ArrowLeft size={16} className="sm:w-5 sm:h-5" />
                 </button>
-                <span className="font-medium">
+                <span className="text-sm sm:text-base font-medium">
                   {format(currentWeekStart, 'MMMM yyyy', { locale: ru })}
                 </span>
                 <button onClick={() => setCurrentWeekStart(d => addDays(d, 7))}>
-                  <ArrowRight size={20} />
+                  <ArrowRight size={16} className="sm:w-5 sm:h-5" />
                 </button>
               </div>
 
-              <div className="grid grid-cols-7 gap-2">
+              <div className="grid grid-cols-7 gap-1 sm:gap-2">
                 {Array.from({ length: 7 }).map((_, i) => {
                   const date = addDays(currentWeekStart, i);
                   const dateStr = format(date, 'yyyy-MM-dd');
@@ -238,7 +238,7 @@ function App() {
                     <button
                       key={i}
                       onClick={() => isAvailable && handleDateSelect(date)}
-                      className={`p-2 rounded-lg text-center relative ${
+                      className={`p-1 sm:p-2 rounded-lg text-center relative ${
                         selectedDate && isSameDay(date, selectedDate)
                           ? 'bg-blue-500 text-white'
                           : isAvailable
@@ -247,19 +247,19 @@ function App() {
                       }`}
                       disabled={!isAvailable}
                     >
-                      <div className="text-xs mb-1">
+                      <div className="text-[10px] sm:text-xs mb-0.5 sm:mb-1">
                         {format(date, 'EEE', { locale: ru })}
                       </div>
-                      <div className="font-medium">
+                      <div className="text-sm sm:text-base font-medium">
                         {format(date, 'd')}
                       </div>
                       {/* Отображение занятого времени в календаре */}
                       {!isAvailable && (
-                        <Lock size={12} className="absolute top-1 right-1 text-gray-500" />
+                        <Lock size={10} className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 text-gray-500" />
                       )}
                       {isAvailable && hasBusySlots && (
-                        <div className="absolute top-1 right-1 flex items-center">
-                          <Lock size={12} className="text-gray-500" />
+                        <div className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 flex items-center">
+                          <Lock size={10} className="text-gray-500" />
                         </div>
                       )}
                     </button>
@@ -270,13 +270,13 @@ function App() {
 
             {/* Временные слоты */}
             {selectedDate && (
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-4 sm:grid-cols-3 gap-1 sm:gap-2">
                 {getAvailableTimes().map(({ time, available }) => (
                   <button
                     key={time}
                     onClick={() => available && handleTimeSelect(time)}
                     disabled={!available}
-                    className={`py-2 px-3 rounded-lg text-center relative ${
+                    className={`py-1.5 sm:py-2 px-1 sm:px-3 rounded-lg text-center relative text-xs sm:text-sm ${
                       selectedTime === time
                         ? 'bg-blue-500 text-white'
                         : available
@@ -286,7 +286,7 @@ function App() {
                   >
                     {time}
                     {!available && (
-                      <Lock size={12} className="absolute top-1 right-1 text-gray-500" />
+                      <Lock size={10} className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 text-gray-500" />
                     )}
                   </button>
                 ))}
@@ -299,14 +299,14 @@ function App() {
 
         {/* Экран чата с AI ассистентом */} 
         {currentScreen === 'chat' && selectedService && selectedMaster && selectedDate && selectedTime && (
-          <div className="mt-6 p-4 border rounded-lg bg-gray-50">
-            <div className="flex items-start space-x-3 mb-4">
-              <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white text-sm flex-shrink-0">
+          <div className="mt-4 sm:mt-6 p-3 sm:p-4 border rounded-lg bg-gray-50">
+            <div className="flex items-start space-x-2 sm:space-x-3 mb-3 sm:mb-4">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white text-xs sm:text-sm flex-shrink-0">
                 Ai
               </div>
-              <div className="bg-white p-3 rounded-lg shadow flex-grow">
-                <p className="text-sm text-gray-800 font-semibold mb-2">Ваша запись подтверждена!</p>
-                <p className="text-sm text-gray-700">
+              <div className="bg-white p-2 sm:p-3 rounded-lg shadow flex-grow">
+                <p className="text-xs sm:text-sm text-gray-800 font-semibold mb-1 sm:mb-2">Ваша запись подтверждена!</p>
+                <p className="text-xs sm:text-sm text-gray-700">
                   Уважаемый клиент, <br />
                   Вы записаны на услугу: <strong>{selectedService.name}</strong><br />
                   Мастер: <strong>{selectedMaster.name}</strong><br />
@@ -314,9 +314,13 @@ function App() {
                   Время: <strong>{selectedTime}</strong><br />
                   Адрес: <a href="https://maps.app.goo.gl/NDXhdTJvx7yjKVoa8" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">Студия "Красота", ул. Примерная, 10</a>
                 </p>
-                <p className="text-sm text-gray-700 mt-3">
+                <p className="text-xs sm:text-sm text-gray-700 mt-2 sm:mt-3">
                   ⚡Я напомню вам о записи за 12 и за 3 часа до встречи.
                 </p>
+                <div className="flex items-center mt-2 sm:mt-3 text-xs sm:text-sm text-blue-500">
+                  <MessageCircle size={14} className="mr-1" />
+                  <a href="https://t.me/la_gracee" target="_blank" rel="noopener noreferrer" className="hover:underline">t.me/la_gracee</a>
+                </div>
               </div>
             </div>
             <button 
@@ -327,7 +331,7 @@ function App() {
                 setSelectedDate(null);
                 setSelectedTime(null);
               }}
-              className="w-full mt-4 py-2 px-4 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 transition-colors"
+              className="w-full mt-3 sm:mt-4 py-1.5 sm:py-2 px-3 sm:px-4 bg-blue-500 text-white rounded-lg text-sm sm:text-base font-medium hover:bg-blue-600 transition-colors"
             >
               Создать новую запись
             </button>
@@ -339,3 +343,5 @@ function App() {
 }
 
 export default App;
+
+// Второе сообщение от ИИ: Если что непонятно, спрашивайте! Я на связи в Telegram: t.me/la_gracee
