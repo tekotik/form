@@ -232,7 +232,7 @@ function App() {
                   const dateStr = format(date, 'yyyy-MM-dd');
                   const key = `${selectedMaster.id}_${dateStr}`;
                   const hasBusySlots = busyTimes[key] && busyTimes[key].length > 0;
-                  const isAvailable = isDayAvailable(date, selectedMaster.id);
+                  const isAvailable = i % 2 === 0; // Имитация того, что половина дат недоступна
                   
                   return (
                     <button
@@ -255,11 +255,11 @@ function App() {
                       </div>
                       {/* Отображение занятого времени в календаре */}
                       {!isAvailable && (
-                        <Lock size={10} className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 text-gray-500" />
+                        <Lock size={8} className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 text-gray-500" />
                       )}
                       {isAvailable && hasBusySlots && (
                         <div className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 flex items-center">
-                          <Lock size={10} className="text-gray-500" />
+                          <Lock size={8} className="text-gray-500" />
                         </div>
                       )}
                     </button>
@@ -270,26 +270,30 @@ function App() {
 
             {/* Временные слоты */}
             {selectedDate && (
-              <div className="grid grid-cols-4 sm:grid-cols-3 gap-1 sm:gap-2">
-                {getAvailableTimes().map(({ time, available }) => (
-                  <button
-                    key={time}
-                    onClick={() => available && handleTimeSelect(time)}
-                    disabled={!available}
-                    className={`py-1.5 sm:py-2 px-1 sm:px-3 rounded-lg text-center relative text-xs sm:text-sm ${
-                      selectedTime === time
-                        ? 'bg-blue-500 text-white'
-                        : available
-                        ? 'border border-blue-500 text-blue-500 hover:bg-blue-50'
-                        : 'bg-gray-200 text-gray-500'
-                    }`}
-                  >
-                    {time}
-                    {!available && (
-                      <Lock size={10} className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 text-gray-500" />
-                    )}
-                  </button>
-                ))}
+              <div className="grid grid-cols-3 sm:grid-cols-3 gap-2 sm:gap-2">
+                {getAvailableTimes().map(({ time, available }, index) => {
+                  // Имитация того, что половина времени недоступна
+                  const isReallyAvailable = index % 2 === 0 ? available : false;
+                  return (
+                    <button
+                      key={time}
+                      onClick={() => isReallyAvailable && handleTimeSelect(time)}
+                      disabled={!isReallyAvailable}
+                      className={`py-2 sm:py-2 px-2 sm:px-3 rounded-lg text-center relative text-xs sm:text-sm ${
+                        selectedTime === time
+                          ? 'bg-blue-500 text-white'
+                          : isReallyAvailable
+                          ? 'border border-blue-500 text-blue-500 hover:bg-blue-50'
+                          : 'bg-gray-200 text-gray-500'
+                      }`}
+                    >
+                      {time}
+                      {!isReallyAvailable && (
+                        <Lock size={8} className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 text-gray-500" />
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -325,15 +329,12 @@ function App() {
             </div>
             <button 
               onClick={() => {
-                setCurrentScreen('service');
-                setSelectedService(null);
-                setSelectedMaster(null);
-                setSelectedDate(null);
-                setSelectedTime(null);
+                window.open('https://t.me/la_gracee', '_blank');
               }}
-              className="w-full mt-3 sm:mt-4 py-1.5 sm:py-2 px-3 sm:px-4 bg-blue-500 text-white rounded-lg text-sm sm:text-base font-medium hover:bg-blue-600 transition-colors"
+              className="w-full mt-3 sm:mt-4 py-1.5 sm:py-2 px-3 sm:px-4 bg-blue-500 text-white rounded-lg text-sm sm:text-base font-medium hover:bg-blue-600 transition-colors flex items-center justify-center"
             >
-              Создать новую запись
+              <MessageCircle size={16} className="mr-2" />
+              Связаться с ассистентом
             </button>
           </div>
         )}
